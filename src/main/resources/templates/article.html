@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+    <div th:insert="~{articles/${#name} :: ${name}}"></div>
+
+    Test article
+    <p th:text = "'name = ' + ${name}"/>
+</body>
+</html>
