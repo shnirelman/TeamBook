@@ -1,15 +1,19 @@
 .article{
-    margin-left: 35px;
+    margin-left: 50px;
 }
 
 .article_h1{
-    margin-left: -10px;
+    margin-left: -35px;
 }
 
 .article_h2{
-    margin-left: 0px;
+    margin-left: -25px;
 }
 
 .article_h3{
-    margin-left: 0px;
+    margin-left: -20px;
+}
+
+.article_h4{
+    margin-left: -15px;
 }
