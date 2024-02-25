@@ -12,6 +12,9 @@
 
     <div th:insert="'articles/' + ${name} :: ${name}"></div>
 
-    <a href="'/test/' + ${name}" class="article">Тест</a>
+    <div class="article" style="text-align: left;">
+        <h2 class="article_h2">Тест</h2>
+        Пройдите небольшой <a href="'/test/' + ${name}">тест</a>, чтобы закрепить материал.
+    </div>
 </body>
 </html>

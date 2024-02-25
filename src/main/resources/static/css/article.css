@@ -1,5 +1,8 @@
 .article{
-    margin-left: 50px;
+    margin-left: 150px;
+    margin-right: 150px;
+    text-align: justify;
+    font-family: Times New Roman;
 }
 
 .article_h1{
