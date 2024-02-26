@@ -4,10 +4,65 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-    Text Text text
-    <div th:each="el : ${questions}">
-        <p th:text="${el.text}"/>
-    </div>
+<style>
+    div {
+        margin-bottom: 30px;
+    }
+    .correct {
+        background-color: #92FF8E;
+    }
+    .incorrect {
+        background-color: #FF6B6B;
+    }
+</style>
+<body id="test">
 </body>
+<script th:inline="javascript">
+    let questions = /*[[${questions}]]*/;
+</script>
+<script>
+    test = document.querySelector('#test');
+
+    let id = 1;
+
+    for(let el of questions) {
+        if(el.article_name == '[[${name}]]') {
+            let div = document.createElement('div');
+            test.appendChild(div);
+
+            let p = document.createElement('p');
+            p.innerHTML = id + '. ' + el.text;
+            id++;
+            div.appendChild(p);
+
+            let input = document.createElement('input');
+            input.dataset.right = el.right_answer;
+            div.appendChild(input);
+        }
+    }
+
+    button = document.createElement('button');
+    button.id = 'button';
+    button.innerHTML = 'Проверить';
+    test.appendChild(button);
+</script>
+<script>
+    button = document.querySelector('#button');
+
+    button.addEventListener('click', function() {
+        let inputs = document.querySelectorAll('#test input');
+
+        for(let input of inputs) {
+            input.classList.remove('correct');
+            input.classList.remove('incorrect');
+
+            if(input.value == input.dataset.right) {
+                input.classList.add('correct');
+            }
+            else {
+                input.classList.add('incorrect');
+            }
+        }
+    });
+</script>
 </html>
