@@ -1,6 +1,8 @@
 package com.bls.TeamBook.Controllers;
 
+import com.bls.TeamBook.models.Answer;
 import com.bls.TeamBook.models.Question;
+import com.bls.TeamBook.repo.AnswerRepository;
 import com.bls.TeamBook.repo.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,12 +28,16 @@ public class MainController {
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @GetMapping("/test/{name}")
     public String test(@PathVariable(value = "name") String name, Model model) {
         model.addAttribute("name", name);
         Iterable<Question> questions = questionRepository.findAll();
         model.addAttribute("questions", questions);
+        Iterable<Answer> answers = answerRepository.findAll();
+        model.addAttribute("answers", answers);
         return "test";
     }
 }
