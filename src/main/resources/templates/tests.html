@@ -1,10 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Getting Started: Serving Web Content</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+
+  <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
+  <style>
+
+  </style>
 </head>
-<body>
-$END$
+<body class="main">
+
+<div th:insert="blocks/header :: header"></div>
+
+<div class="table_of_contents">
+  <h1>Тесты</h1>
+
+  <ul style="list-style-type:circle;">
+    <li clas><h3>Структуры данных</h3>
+      <ul style="list-style-type:disc;">
+        <li><h4><a href="/test/prefix_sums">Префиксные суммы</a></h4></li>
+      </ul>
+    </li>
+    <li><h3>Теория графов</h3>
+      <ul style="list-style-type:disc;">
+
+      </ul>
+    </li>
+  </ul>
+</div>
+
+
 </body>
 </html>

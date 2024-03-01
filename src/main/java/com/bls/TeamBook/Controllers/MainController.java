@@ -16,8 +16,12 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("name", "World");
         return "home";
+    }
+
+    @GetMapping("/tests")
+    public String tests(Model model) {
+        return "tests";
     }
 
     @GetMapping("/article/{name}")
