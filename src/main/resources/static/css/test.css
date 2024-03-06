@@ -1,0 +1,33 @@
+body {
+        margin-top: 20px;
+        margin-left: 50px;
+}
+.title {
+    margin-left: 20px;
+}
+#button {
+    margin-left: 20px;
+}
+.question {
+    margin-bottom: 30px;
+}
+.answer {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    width: 900px;
+}
+.textInput {
+    margin-left: 10px;
+}
+.correct {
+    background-color: #92FF8E;
+}
+.incorrect {
+    background-color: #FF6B6B;
+}
+.radio {
+    margin-right: 10px;
+}
+.checkbox {
+    margin-right: 10px;
+}

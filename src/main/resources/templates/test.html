@@ -5,182 +5,21 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/css/test.css" th:href="@{/css/test.css}"/>
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
 </head>
 <style>
-    body {
-        margin-top: 20px;
-        margin-left: 50px;
-    }
-    .title {
-        margin-left: 20px;
-    }
-    #button {
-        margin-left: 20px;
-    }
-    .question {
-        margin-bottom: 30px;
-    }
-    .answer {
-        margin-bottom: 10px;
-        padding-left: 10px;
-        width: 500px;
-    }
-    .textInput {
-        margin-left: 10px;
-    }
-    .correct {
-        background-color: #92FF8E;
-    }
-    .incorrect {
-        background-color: #FF6B6B;
-    }
-    .radio {
-        margin-right: 10px;
-    }
-    .checkbox {
-        margin-right: 10px;
-    }
+
 </style>
 <body id="test" class="main">
     <div th:insert="blocks/header :: header"></div>
     <h1 class="title">Тест</h1>
 </body>
 <script th:inline="javascript">
-    let questions = /*[[${questions}]]*/;
-    let answers = /*[[${answers}]]*/;
+    var questions = /*[[${questions}]]*/;
+    var answers = /*[[${answers}]]*/;
+    var name = /*[[${name}]]*/;
 </script>
-<script>
-    test = document.querySelector('#test');
-
-    let id = 1;
-    let question2Index = 0;
-
-    for(let el of questions) {
-        if(el.article_name == '[[${name}]]') {
-            let div = document.createElement('div');
-            div.classList.add('question');
-            test.appendChild(div);
-
-            let p = document.createElement('p');
-            p.innerHTML = id + '. ' + el.text;
-            id++;
-            div.appendChild(p);
-
-            if(el.type == 1) {
-                let input = document.createElement('input');
-                input.dataset.right = el.right_answer;
-                div.appendChild(input);
-                input.classList.add('textInput');
-            }
-            else if(el.type == 2) {
-                let answerIndex = 0;
-                for(let answer of answers) {
-                    if(answer.question_id == el.id) {
-                        let divAnswer = document.createElement('div');
-                        divAnswer.classList.add('answer');
-                        div.appendChild(divAnswer);
-
-                        let radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.name = question2Index;
-                        radio.classList.add('radio');
-                        divAnswer.appendChild(radio);
-
-                        let label = document.createElement('label');
-                        label.innerHTML = answer.text;
-                        divAnswer.appendChild(label);
-
-                        if(answerIndex == el.right_answer)
-                            radio.dataset.isCorrect = '1';
-                        else radio.dataset.isCorrect = '0';
-
-                        answerIndex++;
-                    }
-                }
-                question2Index++;
-            }
-            else if(el.type == 3) {
-                let answerIndex = 0;
-                for(let answer of answers) {
-                    if(answer.question_id == el.id) {
-                        let divAnswer = document.createElement('div');
-                        divAnswer.classList.add('answer');
-                        div.appendChild(divAnswer);
-
-                        let checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.name = question2Index;
-                        checkbox.classList.add('checkbox');
-                        divAnswer.appendChild(checkbox);
-
-                        let label = document.createElement('label');
-                        label.innerHTML = answer.text;
-                        divAnswer.appendChild(label);
-
-                        if(el.right_answer.includes(answerIndex))
-                            checkbox.dataset.isCorrect = '1';
-                        else checkbox.dataset.isCorrect = '0';
-
-                        answerIndex++;
-                    }
-                }
-            }
-        }
-    }
-
-    button = document.createElement('button');
-    button.id = 'button';
-    button.innerHTML = 'Проверить';
-    test.appendChild(button);
-</script>
-<script>
-    button = document.querySelector('#button');
-
-    button.addEventListener('click', function() {
-        let textInputs = document.querySelectorAll('#test input.textInput');
-
-        for(let input of textInputs) {
-            input.classList.remove('correct');
-            input.classList.remove('incorrect');
-
-            if(input.value == input.dataset.right) {
-                input.classList.add('correct');
-            }
-            else {
-                input.classList.add('incorrect');
-            }
-        }
-
-        let radioInputs = document.querySelectorAll('#test input.radio');
-
-        for(let input of radioInputs) {
-            input.parentElement.classList.remove('correct');
-            input.parentElement.classList.remove('incorrect');
-
-            if(input.checked) {
-                if(input.dataset.isCorrect == '1')
-                    input.parentElement.classList.add('correct');
-                else input.parentElement.classList.add('incorrect');
-            }
-        }
-
-        let checkboxInputs = document.querySelectorAll('#test input.checkbox');
-
-        for(let input of checkboxInputs) {
-            input.parentElement.classList.remove('correct');
-            input.parentElement.classList.remove('incorrect');
-
-            if(input.checked) {
-                if(input.dataset.isCorrect == '1')
-                    input.parentElement.classList.add('correct');
-                else input.parentElement.classList.add('incorrect');
-            }
-            else {
-                if(input.dataset.isCorrect == '1')
-                    input.parentElement.classList.add('incorrect');
-            }
-        }
-    });
-</script>
+<script src="../static/js/createQuestions.js" th:src="@{/js/createQuestions.js}"></script>
+<script src="../static/js/testButton.js" th:src="@{/js/testButton.js}"></script>
 </html>
