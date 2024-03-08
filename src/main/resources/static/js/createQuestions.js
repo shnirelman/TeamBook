@@ -35,6 +35,7 @@ for(let el of questions) {
                     divAnswer.appendChild(radio);
 
                     let label = document.createElement('label');
+                    label.classList.add('answerText');
                     label.innerHTML = answer.text;
                     divAnswer.appendChild(label);
 
@@ -62,6 +63,7 @@ for(let el of questions) {
                     divAnswer.appendChild(checkbox);
 
                     let label = document.createElement('label');
+                    label.classList.add('answerText');
                     label.innerHTML = answer.text;
                     divAnswer.appendChild(label);
 

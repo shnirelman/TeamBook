@@ -27,7 +27,15 @@ body {
 }
 .radio {
     margin-right: 10px;
+    display: inline-block;
 }
 .checkbox {
     margin-right: 10px;
+    display: inline-block;
+}
+
+.answerText {
+    display: inline-block;
+    vertical-align: top;
+    width: 850px;
 }
