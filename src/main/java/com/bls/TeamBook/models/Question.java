@@ -11,7 +11,8 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String article_name, text, right_answer, explanation;
+    private Long article_id;
+    private String text, right_answer, explanation;
     private int type;
 
     public Long getId() {
@@ -20,14 +21,6 @@ public class Question {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getArticle_name() {
-        return article_name;
-    }
-
-    public void setArticle_name(String article_name) {
-        this.article_name = article_name;
     }
 
     public String getText() {
@@ -60,5 +53,14 @@ public class Question {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+
+    public Long getArticle_id() {
+        return article_id;
+    }
+
+    public void setArticle_id(Long article_id) {
+        this.article_id = article_id;
     }
 }
