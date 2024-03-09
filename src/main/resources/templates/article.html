@@ -7,7 +7,7 @@
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
     <link href="../static/css/article.css" th:href="@{/css/article.css}" rel="stylesheet" />
 </head>
-<body class="main">
+<body id="article" class="main">
     <div th:insert="blocks/header :: header"></div>
     <div th:insert="'articles/' + ${name} :: ${name}"></div>
 
@@ -15,5 +15,14 @@
         <h2 class="article_h2">Тест</h2>
         Пройдите небольшой <a th:href="'/test/' + ${name}">тест</a>, чтобы закрепить материал.
     </div>
+
+    <div class="article" style="text-align: left;">
+        <h2 class="article_h2">Комментарии</h2>
+        <script th:inline="javascript">
+            var comments = /*[[${comments}]]*/;
+        </script>
+        <script src="../static/js/articleComments.js" th:src="@{/js/articleComments.js}"></script>
+    </div>
+
 </body>
 </html>

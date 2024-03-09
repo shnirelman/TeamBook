@@ -20,3 +20,15 @@
 .article_h4{
     margin-left: -15px;
 }
+
+.comment{
+    background-color: #FFF8E0;
+    border-radius: 10px;
+}
+
+.comment_p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
