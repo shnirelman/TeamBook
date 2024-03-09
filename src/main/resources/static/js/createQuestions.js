@@ -44,11 +44,13 @@ for(let el of questions) {
 
                 let radio = document.createElement('input');
                 radio.type = 'radio';
+                radio.id = answer.id;
                 radio.name = el.id;
                 radio.classList.add('radio');
                 divAnswer.appendChild(radio);
 
                 let label = document.createElement('label');
+                label.setAttribute('for', radio.id);
                 label.classList.add('answerText');
                 label.innerHTML = answer.text;
                 divAnswer.appendChild(label);
@@ -69,10 +71,12 @@ for(let el of questions) {
 
                 let checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
+                checkbox.id = answer.id;
                 checkbox.classList.add('checkbox');
                 divAnswer.appendChild(checkbox);
 
                 let label = document.createElement('label');
+                label.setAttribute('for', checkbox.id);
                 label.classList.add('answerText');
                 label.innerHTML = answer.text;
                 divAnswer.appendChild(label);
