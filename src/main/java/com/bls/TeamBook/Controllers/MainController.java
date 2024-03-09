@@ -2,8 +2,10 @@ package com.bls.TeamBook.Controllers;
 
 import com.bls.TeamBook.models.Answer;
 import com.bls.TeamBook.models.Article;
+import com.bls.TeamBook.models.Comment;
 import com.bls.TeamBook.models.Question;
 import com.bls.TeamBook.repo.AnswerRepository;
+import com.bls.TeamBook.repo.CommentRepository;
 import com.bls.TeamBook.repo.QuestionRepository;
 import com.bls.TeamBook.repo.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,15 @@ import java.util.Iterator;
 
 @Controller
 public class MainController {
+    @Autowired
+    private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+
 
     @GetMapping("/")
     public String home(Model model) {
@@ -43,31 +54,25 @@ public class MainController {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("login", login);
 
+        Long id = getArticleId(name);
+
         model.addAttribute("name", name);
+        model.addAttribute("id", id);
+
+        Iterable<Comment> comments = commentRepository.getCommentsByArticleId(id);
+        model.addAttribute("comments", comments);
+
         return "article";
     }
 
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private ArticleRepository articleRepository;
+
 
     @GetMapping("/test/{name}")
     public String test(@PathVariable(value = "name") String name, Model model) {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("login", login);
 
-        // Iterable<Answer> ids = answerRepository.testing();
-        //Iterable<Long> ids = articleRepository.findIdByAddressName("prefix_sums");
-        Iterable<Long> ids = articleRepository.findIdByAddressName(name);
-        Iterator<Long> idsItrator = ids.iterator();
-        if(!idsItrator.hasNext()) {
-            //TODO ERROR
-        }
-        Long id = idsItrator.next();
-
+        Long id = getArticleId(name);
 
         model.addAttribute("name", name);
         model.addAttribute("id", id);
@@ -82,5 +87,14 @@ public class MainController {
         Iterable<Answer> answers = answerRepository.findAllByQuestionsId(questionsId);
         model.addAttribute("answers", answers);/**/
         return "test";
+    }
+
+    private Long getArticleId(String articleName) {
+        Iterable<Long> ids = articleRepository.findIdByAddressName(articleName);
+        Iterator<Long> idsItrator = ids.iterator();
+        if(!idsItrator.hasNext()) {
+            //TODO ERROR
+        }
+        return idsItrator.next();
     }
 }
