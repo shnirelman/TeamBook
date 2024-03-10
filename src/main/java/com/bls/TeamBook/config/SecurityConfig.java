@@ -1,7 +1,10 @@
 package com.bls.TeamBook.config;
 
+import com.bls.TeamBook.services.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -18,11 +21,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public UserDetailsService userDetailsService (PasswordEncoder encoder) {
-        UserDetails admin = User.builder().username("admin").password(encoder.encode("admin")).build();
-        UserDetails user = User.builder().username("user").password(encoder.encode("user")).build();
-
-        return new InMemoryUserDetailsManager(admin, user);
+    public UserDetailsService userDetailsService () {
+        return new MyUserDetailsService();
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,6 +30,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
+    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService());
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
