@@ -7,7 +7,9 @@
 
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" />
     <style>
-
+        .error {
+            color: red;
+        }
     </style>
 </head>
 <body class="main">
@@ -15,10 +17,14 @@
 <div th:insert="blocks/header :: header"></div>
 
 <div class="table_of_contents">
-    <h1>Регистрация</h1>
+    <h1>Регистрация</h1><br>
     <form action="/new-user" method="post" class="mb-5">
+        <span th:text="${loginError}" class="error"></span>
         <input type="text" name="login" placeholder="Логин" class="form-control"><br>
+        <span th:text="${passwordError}" class="error"></span>
         <input type="password" name="password" placeholder="Пароль" class="form-control"><br>
+        <span th:text="${confirmPasswordError}" class="error"></span>
+        <input type="password" name="confirmPassword" placeholder="Подтверждение пароля" class="form-control"><br>
         <button type="submit" class="btn btn-success">Зарегистрироваться</button>
     </form>
 
