@@ -3,6 +3,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.springframework.lang.NonNull;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 
 @Entity
 public class Comment {
@@ -12,6 +16,10 @@ public class Comment {
 
     private Long article_id;
     private Long user_id;
+    private Long parent_id;
+    @NonNull
+    private Timestamp date;
+
     private String text;
 
     public Long getUser_id() {
@@ -44,5 +52,21 @@ public class Comment {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Long getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(Long parent_id) {
+        this.parent_id = parent_id;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 }
