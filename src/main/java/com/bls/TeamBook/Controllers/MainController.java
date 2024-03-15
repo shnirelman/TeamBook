@@ -3,24 +3,32 @@ package com.bls.TeamBook.Controllers;
 import com.bls.TeamBook.models.Answer;
 import com.bls.TeamBook.models.Article;
 import com.bls.TeamBook.models.Comment;
+import com.bls.TeamBook.models.MyUser;
 import com.bls.TeamBook.models.Question;
 import com.bls.TeamBook.repo.AnswerRepository;
 import com.bls.TeamBook.repo.CommentRepository;
 import com.bls.TeamBook.repo.QuestionRepository;
 import com.bls.TeamBook.repo.ArticleRepository;
+import com.bls.TeamBook.repo.UserRepository;
+import com.bls.TeamBook.services.MainService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 import java.util.*;
 
 @Controller
+@AllArgsConstructor
 public class MainController {
     @Autowired
     private QuestionRepository questionRepository;
@@ -30,20 +38,27 @@ public class MainController {
     private ArticleRepository articleRepository;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
+
+    private MainService service;
+    public String getLogin() {
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return login;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("login", login);
+        model.addAttribute("login", getLogin());
 
         return "home";
     }
 
     @GetMapping("/tests")
     public String tests(Model model) {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("login", login);
+        model.addAttribute("login", getLogin());
 
         return "tests";
     }
@@ -97,8 +112,7 @@ public class MainController {
 
     @GetMapping("/article/{name}")
     public String home(@PathVariable(value = "name") String name, Model model) {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("login", login);
+        model.addAttribute("login", getLogin());
 
         Long id = getArticleId(name);
 
@@ -129,10 +143,11 @@ public class MainController {
         return "article";
     }
 
+
+    
     @GetMapping("/test/{name}")
     public String test(@PathVariable(value = "name") String name, Model model) {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("login", login);
+        model.addAttribute("login", getLogin());
 
         Long id = getArticleId(name);
 
@@ -158,5 +173,52 @@ public class MainController {
             //TODO ERROR
         }
         return idsItrator.next();
+    }
+
+    @PostMapping("/new-user")
+    public String addUser(@RequestParam String login, @RequestParam String password, @RequestParam String confirmPassword,
+                          HttpServletRequest request, Model model) throws ServletException {
+        if(userRepository.findByLogin(login).isPresent()) {
+            model.addAttribute("loginError", "Такой пользователь уже есть");
+            model.addAttribute("login", getLogin());
+
+            return "new_user";
+        }
+
+        int len = login.length();
+
+        if(len == 0 || len > 20) {
+            model.addAttribute("loginError", "Логин должен быть от 1 до 20 символов");
+            model.addAttribute("login", getLogin());
+
+            return "new_user";
+        }
+
+        if(password.length() < 8) {
+            model.addAttribute("passwordError", "Пароль должен быть не менее 8 символов");
+            model.addAttribute("login", getLogin());
+
+            return "new_user";
+        }
+
+        if(!Objects.equals(confirmPassword, password)) {
+            model.addAttribute("confirmPasswordError", "Пароли не совпадают");
+            model.addAttribute("login", getLogin());
+
+            return "new_user";
+        }
+
+        service.addUser(new MyUser(login, password));
+
+        request.logout();
+        request.login(login, password);
+        return "redirect:/";
+    }
+
+    @GetMapping("/new-user")
+    public String newUser(Model model) {
+        model.addAttribute("login", getLogin());
+
+        return "new_user";
     }
 }
