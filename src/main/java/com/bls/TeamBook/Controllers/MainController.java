@@ -46,6 +46,9 @@ public class MainController {
     public String getLogin() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser")
+            login = "";
+
         return login;
     }
 
@@ -220,5 +223,17 @@ public class MainController {
         model.addAttribute("login", getLogin());
 
         return "new_user";
+    }
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("login", getLogin());
+
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logout(Model model) {
+        return "redirect:/";
     }
 }

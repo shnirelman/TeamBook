@@ -1,6 +1,7 @@
 package com.bls.TeamBook.config;
 
 import com.bls.TeamBook.services.MyUserDetailsService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,7 +29,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll())
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/login")
+                                .permitAll()
+                )
+                .logout(lOut -> {
+                    lOut.logoutSuccessUrl("/")
+                        .permitAll();
+                })
                 .build();
     }
     @Bean

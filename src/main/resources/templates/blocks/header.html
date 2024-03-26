@@ -14,9 +14,23 @@
             </ul>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="/login" class="nav-link" th:text="${login}"></a></li>
-                <li><a href="/new-user" class="nav-link">Зарегистрироваться</a></li>
+                <li><a href="/login" id="loginLink" class="nav-link" th:text="${login}"></a></li>
+                <li><a href="/new-user" id="registerLink" class="nav-link" hidden="true">Зарегистрироваться</a></li>
+                <li><a href="/logout" id="logoutLink" class="nav-link">Выйти</a></li>
             </ul>
+            <script>
+                let loginLink = document.getElementById('loginLink');
+
+                if(loginLink.text == '')
+                {
+                    let registerLink = document.getElementById('registerLink');
+                    let logoutLink = document.getElementById('logoutLink');
+
+                    registerLink.hidden = false;
+                    logoutLink.hidden = true;
+                    loginLink.text = 'Войти';
+                }
+            </script>
         </header>
     </div>
 </div>
