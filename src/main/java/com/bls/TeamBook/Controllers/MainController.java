@@ -178,33 +178,33 @@ public class MainController {
     @PostMapping("/new-user")
     public String addUser(@RequestParam String login, @RequestParam String password, @RequestParam String confirmPassword,
                           HttpServletRequest request, Model model) throws ServletException {
+        boolean error = false;
+
         if(userRepository.findByLogin(login).isPresent()) {
             model.addAttribute("loginError", "Такой пользователь уже есть");
-            model.addAttribute("login", getLogin());
-
-            return "new_user";
+            error = true;
         }
 
         int len = login.length();
 
-        if(len == 0 || len > 20) {
-            model.addAttribute("loginError", "Логин должен быть от 1 до 20 символов");
-            model.addAttribute("login", getLogin());
-
-            return "new_user";
+        if(len < 3 || len > 20) {
+            model.addAttribute("loginError", "Логин должен быть от 3 до 20 символов");
+            error = true;
         }
 
         if(password.length() < 8) {
             model.addAttribute("passwordError", "Пароль должен быть не менее 8 символов");
-            model.addAttribute("login", getLogin());
-
-            return "new_user";
+            error = true;
         }
 
         if(!Objects.equals(confirmPassword, password)) {
             model.addAttribute("confirmPasswordError", "Пароли не совпадают");
-            model.addAttribute("login", getLogin());
+            error = true;
+        }
 
+        if(error) {
+            model.addAttribute("login", getLogin());
+            model.addAttribute("savedLogin", login);
             return "new_user";
         }
 
