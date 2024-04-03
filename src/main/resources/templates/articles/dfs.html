@@ -16,7 +16,11 @@
       }
     </style>
     <form class="form">
-        <button type="button" id="btnAddVertex">Добавить вершину</button><br>
+        <input type="radio" name="1" id="radioDirected" checked="true">
+        <label for="radioDirected">Ориентированный граф</label><br>
+        <input type="radio" name="1" id="radioUndirected">
+        <label for="radioUndirected">Неориентированный граф</label><br>
+        <button class="mt-5" type="button" id="btnAddVertex">Добавить вершину</button><br>
         <input class="input mt-5" type="text" id="txtDeleteVertex" value="1">
         <button type="button" id="btnDeleteVertex">Удалить вершину</button><br>
         <input class="input mt-5" type="text" id="txtAddEdge1" value="1">
