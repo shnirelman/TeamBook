@@ -1,0 +1,33 @@
+<div th:fragment="dfs">
+    <h1 class="article_h1"> Обход в глубину </h1>
+    <style type="text/css">
+      #drawing {
+         border: 3px solid #000;
+         display: inline-block;
+         margin: 0 auto;
+      }
+      .form {
+        display: inline-block;
+        vertical-align: top;
+        width: 400px;
+      }
+      .input {
+        width: 50px;
+      }
+    </style>
+    <form class="form">
+        <button type="button" id="btnAddVertex">Добавить вершину</button><br>
+        <input class="input mt-5" type="text" id="txtDeleteVertex" value="1">
+        <button type="button" id="btnDeleteVertex">Удалить вершину</button><br>
+        <input class="input mt-5" type="text" id="txtAddEdge1" value="1">
+        <input class="input" type="text" id="txtAddEdge2" value="3">
+        <button type="button" id="btnAddEdge">Добавить ребро</button><br>
+        <input class="input mt-5" type="text" id="txtDeleteEdge1" value="1">
+        <input class="input" type="text" id="txtDeleteEdge2" value="2">
+        <button type="button" id="btnDeleteEdge">Удалить ребро</button><br>
+        <input class="input mt-5" type="text" id="txtDfs" value="1">
+        <button type="button" id="btnDfs">Запустить DFS</button><br>
+    </form>
+    <canvas id="drawing" width="600" height="500">Ошибка</canvas>
+    <script src="../static/js/dfsVisualization.js" th:src="@{/js/dfsVisualization.js}"></script>
+</div>
