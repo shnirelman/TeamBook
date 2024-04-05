@@ -4,6 +4,7 @@ let ctx = canvas.getContext('2d');
 let n = 0;
 let dfsVertex = -1;
 let grey = [];
+let isDirected = 1;
 
 let X = new Array();
 let Y = new Array();
@@ -106,10 +107,47 @@ function drawEdge(v, u) {
     if(g[v][u] == 1)
         ctx.strokeStyle = 'black';
     else ctx.strokeStyle = 'red';
-    ctx.beginPath();
-    ctx.moveTo(X[v], Y[v]);
-    ctx.lineTo(X[u], Y[u]);
-    ctx.stroke();
+
+    if(isDirected == 0) {
+        if(g[u][v] == 2 || g[u][v] == 1 && g[v][u] == 1 && u > v)
+            return;
+
+        ctx.beginPath();
+        ctx.moveTo(X[v], Y[v]);
+        ctx.lineTo(X[u], Y[u]);
+        ctx.stroke();
+    }
+    else {
+        let dx = X[v] - X[u];
+        let dy = Y[v] - Y[u];
+        let len = Math.sqrt(dx * dx + dy * dy);
+        let x = X[u] + dx / len * R;
+        let y = Y[u] + dy / len * R;
+
+        let shx = 0, shy = 0;
+
+        if(g[u][v] >= 1) {
+            shx = -dy / len * 8;
+            shy = dx / len * 8;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(X[v] + shx, Y[v] + shy);
+        ctx.lineTo(X[u] + shx, Y[u] + shy);
+        ctx.stroke();
+
+        x += shx;
+        y += shy;
+
+        let a = Math.PI / 6;
+        ctx.beginPath();
+        ctx.moveTo(x + (dx * Math.cos(a) - dy * Math.sin(a)) / len * 20,
+                   y + (dx * Math.sin(a) + dy * Math.cos(a)) / len * 20);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x + (dx * Math.cos(-a) - dy * Math.sin(-a)) / len * 20,
+                   y + (dx * Math.sin(-a) + dy * Math.cos(-a)) / len * 20);
+        ctx.stroke();
+    }
 }
 
 function addEdge(v, u) {
@@ -117,7 +155,6 @@ function addEdge(v, u) {
         u--;
         v--;
         g[v][u] = 1;
-        g[u][v] = 1;
     }
 }
 
@@ -125,8 +162,11 @@ function deleteEdge(v, u) {
     if(isVertex(v) && isVertex(u)) {
         u--;
         v--;
+
         g[v][u] = 0;
-        g[u][v] = 0;
+
+        if(isDirected == 0)
+            g[u][v] = 0;
     }
 }
 
@@ -135,7 +175,7 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for(let i = 0; i < n; i++)
-        for(let j = 0; j < i; j++)
+        for(let j = 0; j < n; j++)
             if(g[i][j] >= 1)
                 drawEdge(i, j);
 
@@ -190,6 +230,25 @@ document.addEventListener("mousemove", (e) => {
 
 document.addEventListener("mouseup", (e) => {
     movingVertex = -1;
+});
+
+let radioDirected = document.getElementById("radioDirected");
+let radioUndirected = document.getElementById("radioUndirected");
+
+radioDirected.addEventListener("click", function() {
+    if(isDirected == 0) {
+        clearCurDfs();
+        isDirected = 1;
+        draw();
+    }
+});
+
+radioUndirected.addEventListener("click", function() {
+    if(isDirected == 1) {
+        clearCurDfs();
+        isDirected = 0;
+        draw();
+    }
 });
 
 let btnAddVertex = document.getElementById("btnAddVertex");
@@ -264,10 +323,18 @@ function dfs(v) {
     step++;
 
     for(let i = 0; i < n; i++) {
-        if(g[v][i] >= 1) {
-            if(used[i] != 1)
-                steps[step] = [v, i, 1];
-            else steps[step] = [v, i];
+        if(g[v][i] >= 1 || g[i][v] >= 1 && isDirected == 0) {
+            if(g[v][i] >= 1) {
+                if(used[i] != 1)
+                    steps[step] = [v, i, 1];
+                else steps[step] = [v, i];
+            }
+            else {
+                if(used[i] != 1)
+                    steps[step] = [i, v, 1];
+                else steps[step] = [i, v];
+            }
+
 
             step++;
 
@@ -311,7 +378,8 @@ function dfsIter(curDfs, i) {
         return;
     }
 
-    g[x[0]][x[1]] = g[x[1]][x[0]] = 2;
+    g[x[0]][x[1]] = 2;
+
     draw();
 
     setTimeout(dfsClearIter, 600, curDfs, i);
@@ -322,9 +390,11 @@ function dfsClearIter(curDfs, i) {
         return;
 
     let x = steps[i];
-    g[x[0]][x[1]] = g[x[1]][x[0]] = 1;
+
+    g[x[0]][x[1]] = 1;
+
     if(x[2] == 1)
-        dfsVertex = x[1];
+        dfsVertex ^= x[0] ^ x[1];
     draw();
 
     setTimeout(dfsIter, 600, curDfs, i + 1);
@@ -335,7 +405,9 @@ function drawDfs(v) {
     dfs(v);
 
     dfsVertex = v;
-    dfsIter(indDfs, 0);
+    draw();
+
+    setTimeout(dfsIter, 600, indDfs, 0);
 }
 
 let btnDfs = document.getElementById("btnDfs");
