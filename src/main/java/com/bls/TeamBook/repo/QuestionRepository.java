@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public interface QuestionRepository extends CrudRepository<Question, Long> {
     @Query(
-            value = "SELECT * FROM Question q WHERE q.article_id = 1",
+            value = "SELECT * FROM Question q WHERE q.article_id = :article_id",
             nativeQuery = true
     )
     ArrayList<Question> findAllByArticleId(@Param("article_id") Long articleId);
