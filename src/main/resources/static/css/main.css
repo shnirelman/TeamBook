@@ -7,3 +7,7 @@
     margin-right: 150px;
     font-family: Times New Roman;
 }
+
+.simple_link{
+    text-decoration: none;
+}

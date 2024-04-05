@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
 public class Comment {
@@ -24,6 +25,15 @@ public class Comment {
 
     public Long getUser_id() {
         return user_id;
+    }
+
+    public Comment() {}
+    public Comment(Long article_id, Long user_id, Long parent_id, String text) {
+        this.article_id = article_id;
+        this.user_id = user_id;
+        this.parent_id = parent_id;
+        this.text = text;
+        this.date = Timestamp.from(Instant.now());
     }
 
     public void setUser_id(Long user_id) {
@@ -69,4 +79,6 @@ public class Comment {
     public void setDate(Timestamp date) {
         this.date = date;
     }
+
+
 }

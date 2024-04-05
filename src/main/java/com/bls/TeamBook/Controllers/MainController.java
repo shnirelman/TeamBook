@@ -10,6 +10,7 @@ import com.bls.TeamBook.repo.CommentRepository;
 import com.bls.TeamBook.repo.QuestionRepository;
 import com.bls.TeamBook.repo.ArticleRepository;
 import com.bls.TeamBook.repo.UserRepository;
+import com.bls.TeamBook.services.CommentService;
 import com.bls.TeamBook.services.MainService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +44,7 @@ public class MainController {
 
 
     private MainService service;
+    private CommentService commentService;
     public String getLogin() {
         String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -55,7 +57,6 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("login", getLogin());
-
         return "home";
     }
 
@@ -127,7 +128,7 @@ public class MainController {
         ArrayList<Comment> roots = new ArrayList<>();
         for(Comment comment : comments) {
             Long parId = comment.getParent_id();
-            if(parId != null) {
+            if(parId != null && parId >= 0) {
                 graph.get(parId).add(comment);
             } else {
                 roots.add(comment);
@@ -176,6 +177,21 @@ public class MainController {
             //TODO ERROR
         }
         return idsItrator.next();
+    }
+
+    @PostMapping("/article/{articleName}/new_comment")
+    public String addComment(@PathVariable(value = "articleName") String articleName,
+                             @RequestParam String comment_text,
+                             @RequestParam Long par_id,
+                             Model model) {
+        System.out.println("add comment");
+        /*return "home";*/
+        Long articleId = getArticleId(articleName);
+        commentService.addComment(new Comment(articleId, 1L, par_id, comment_text));
+        //return "home";
+        return "redirect:/article/" + articleName;
+        //return "redirect: /article/" + articleName;
+        //return "redirect:/";
     }
 
     @PostMapping("/new-user")
