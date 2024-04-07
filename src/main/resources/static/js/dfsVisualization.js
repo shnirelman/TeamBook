@@ -183,13 +183,25 @@ function draw() {
         drawVertex(vertices[i]);
 }
 
-for(let i = 150; i <= 350; i += 50)
-    addVertex(i, i);
+function deleteGraph() {
+    g = [];
+    vertices = [];
+    n = 0;
+    draw();
+}
 
-for(let i = 1; i < n; i++)
-    addEdge(i, i + 1);
+function loadExample() {
+    for(let i = 150; i <= 350; i += 50)
+        addVertex(i, i);
 
-draw();
+    for(let i = 1; i < n; i++)
+        addEdge(i, i + 1);
+
+    draw();
+}
+
+loadExample();
+
 let movingVertex = -1;
 
 canvas.addEventListener("mousedown", (e) => {
@@ -230,6 +242,19 @@ document.addEventListener("mousemove", (e) => {
 
 document.addEventListener("mouseup", (e) => {
     movingVertex = -1;
+});
+
+let btnDeleteGraph = document.getElementById("btnDeleteGraph");
+btnDeleteGraph.addEventListener("click", function() {
+    clearCurDfs();
+    deleteGraph();
+});
+
+let btnLoadExample = document.getElementById("btnLoadExample");
+btnLoadExample.addEventListener("click", function() {
+    clearCurDfs();
+    deleteGraph();
+    loadExample();
 });
 
 let radioDirected = document.getElementById("radioDirected");

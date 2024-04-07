@@ -16,20 +16,22 @@
       }
     </style>
     <form class="form">
-        <input type="radio" name="1" id="radioDirected" checked="true">
+        <button type="button" id="btnDeleteGraph">Удалить граф</button>
+        <button type="button" id="btnLoadExample">Загрузить пример</button><br>
+        <input type="radio" class="mt-4" name="1" id="radioDirected" checked="true">
         <label for="radioDirected">Ориентированный граф</label><br>
         <input type="radio" name="1" id="radioUndirected">
         <label for="radioUndirected">Неориентированный граф</label><br>
-        <button class="mt-5" type="button" id="btnAddVertex">Добавить вершину</button><br>
-        <input class="input mt-5" type="text" id="txtDeleteVertex" value="1">
+        <button class="mt-4" type="button" id="btnAddVertex">Добавить вершину</button><br>
+        <input class="input mt-4" type="text" id="txtDeleteVertex" value="1">
         <button type="button" id="btnDeleteVertex">Удалить вершину</button><br>
-        <input class="input mt-5" type="text" id="txtAddEdge1" value="1">
+        <input class="input mt-4" type="text" id="txtAddEdge1" value="1">
         <input class="input" type="text" id="txtAddEdge2" value="3">
         <button type="button" id="btnAddEdge">Добавить ребро</button><br>
-        <input class="input mt-5" type="text" id="txtDeleteEdge1" value="1">
+        <input class="input mt-4" type="text" id="txtDeleteEdge1" value="1">
         <input class="input" type="text" id="txtDeleteEdge2" value="2">
         <button type="button" id="btnDeleteEdge">Удалить ребро</button><br>
-        <input class="input mt-5" type="text" id="txtDfs" value="1">
+        <input class="input mt-4" type="text" id="txtDfs" value="1">
         <button type="button" id="btnDfs">Запустить DFS</button><br>
     </form>
     <canvas id="drawing" width="600" height="500">Ошибка</canvas>
