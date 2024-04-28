@@ -48,12 +48,12 @@ function isInt(x) {
     return /^\d+$/.test(x);
 }
 
-function isVertex(x) {
+function isVertex(x, n) {
     return (isInt(x) && x >= 1 && x <= n);
 }
 
 function deleteVertex(v) {
-    if(isVertex(v)) {
+    if(isVertex(v, n)) {
         if(v >= 1 && v <= n) {
             v--;
             for(let i = v + 1; i < n; i++) {
@@ -151,7 +151,7 @@ function drawEdge(v, u) {
 }
 
 function addEdge(v, u) {
-    if(v != u && isVertex(v) && isVertex(u)) {
+    if(v != u && isVertex(v, n) && isVertex(u, n)) {
         u--;
         v--;
         g[v][u] = 1;
@@ -159,7 +159,7 @@ function addEdge(v, u) {
 }
 
 function deleteEdge(v, u) {
-    if(isVertex(v) && isVertex(u)) {
+    if(isVertex(v, n) && isVertex(u, n)) {
         u--;
         v--;
 
@@ -441,6 +441,107 @@ let txtDfs = document.getElementById("txtDfs");
 btnDfs.addEventListener("click", function() {
     let v = txtDfs.value;
 
-    if(isVertex(v))
+    if(isVertex(v, n))
         drawDfs(v - 1);
 });
+
+function handleFilesOpen(files) {
+    clearCurDfs();
+    draw();
+    
+    let file = files[0];
+
+    let reader = new FileReader();
+
+    reader.readAsText(file);
+
+    reader.onload = function() {
+        let text = reader.result;
+
+        let nums = text.split(/\ |\n/).map(Number);
+
+        let isDir = nums[0];
+        let N = nums[1];
+        let M = nums[2];
+
+        for(let i = 0; i < 3; i++)
+            if(!isInt(nums[i])) {
+                return;
+            }
+
+        for(let i = 3; i < 3 + 2 * N; i++)
+            if(isNaN(nums[i])) {
+                return;
+            }
+
+        for(let i = 3 + 2 * N; i < 3 + 2 * N + 2 * M; i++) {
+            if(!isVertex(nums[i], N)) {
+                return;
+            }
+            nums[i]--;
+        }
+
+        isDirected = (isDir != 0);
+        n = N;
+
+        if(isDirected)
+            radioDirected.checked = true;
+        else radioUndirected.checked = true;
+
+        g = new Array();
+        grey = new Array();
+
+        for(let i = 0; i < n; i++)
+            g[i] = new Array();
+
+        for(let i = 0; i < M; i++) {
+            g[nums[3 + 2 * n + 2 * i]][nums[4 + 2 * n + 2 * i]] = 1;
+        }
+
+        X = new Array();
+        Y = new Array();
+
+        for(let i = 0; i < n; i++) {
+            X[i] = nums[3 + 2 * i];
+            Y[i] = nums[4 + 2 * i];
+        }
+
+        draw();
+    };
+}
+
+let btnSave = document.getElementById('btnSave');
+
+btnSave.addEventListener("click", function() {
+    clearCurDfs();
+    draw();
+
+    let ans = "";
+
+    ans += (isDirected ? 1 : 0);
+
+    let m = 0;
+
+    for(let i = 0; i < n; i++)
+        for(let j = 0; j < n; j++)
+            if(g[i][j] == 1)
+                m++;
+
+    ans += "\n" + n + ' ' + m + "\n";
+
+    for(let i = 0; i < n; i++)
+        ans += X[i] + ' ' + Y[i] + "\n";
+
+    for(let i = 0; i < n; i++) {
+        for(let j = 0; j < n; j++) {
+            if(g[i][j] == 1)
+                ans += (i + 1) + ' ' + (j + 1) + "\n";
+        }
+    }
+
+    let linkSave = document.getElementById('linkSave');
+    linkSave.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(ans));
+
+    linkSave.click();
+});
+

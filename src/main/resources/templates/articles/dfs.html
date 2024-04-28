@@ -18,6 +18,11 @@
     <form class="form">
         <button type="button" id="btnDeleteGraph">Удалить граф</button>
         <button type="button" id="btnLoadExample">Загрузить пример</button><br>
+        <input hidden type="file" accept=".txt" id="fileInputOpen" onchange="handleFilesOpen(this.files);">
+        <button type="button" class="mt-4"
+                onclick="document.getElementById('fileInputOpen').click();console.log('open');">Открыть</button>
+        <button type="button" id="btnSave">Сохранить</button>
+        <a download="graph.txt" hidden id="linkSave"></a><br>
         <input type="radio" class="mt-4" name="1" id="radioDirected" checked="true">
         <label for="radioDirected">Ориентированный граф</label><br>
         <input type="radio" name="1" id="radioUndirected">
