@@ -42,10 +42,12 @@
     <span class="math inline"><em>p</em> = [0,4,7,5,10,20]</span>. Для запроса <span class="math inline"><em>l</em> = 2</span>,
     <span class="math inline"><em>r</em> = 4</span> ответ равен: <span class="math inline"><em>p</em>[4] − <em>p</em>[1] = 10 − 4 = 6 = 3 + (−2) + 5</span>.<br>
     <h2 class="article_h2" id="realization">Реализация</h2>
-    <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">vector<span style="color: #333333">&lt;</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">&gt;</span> p(n <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>);
+    <!-- <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">vector<span style="color: #333333">&lt;</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">&gt;</span> p(n <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>);
 <span style="color: #008800; font-weight: bold">for</span>(<span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> n; i<span style="color: #333333">++</span>)
     p[i <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>] <span style="color: #333333">=</span> p[i] <span style="color: #333333">+</span> a[i];
-</pre></div>
+</pre></div> --->
+    <pre><code class="language-cpp">for(int i = 0; i < n; i++)
+    p[i + 1] = p[i] + a[i];</code></pre>
 
     <h2 class="article_h2" id="applications">Применения</h2>
     Помимо суммы на подотрезке, можно аналогично выполнять любые операции соответствующие правилу <span class="math inline"><em>a</em> + <em>b</em> = <em>c</em> → <em>b</em> = <em>c</em> − <em>a</em></span>,

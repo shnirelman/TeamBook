@@ -96,7 +96,7 @@ for(let comment of comments) {
 
     let p3 = document.createElement('p');
     p3.classList.add('comment_p');
-    p3.innerHTML = comment.comment.text;
+    p3.innerHTML = comment.comment.text_html;
     div.appendChild(p3);
 
     add_btn_answer(div, comment.comment.id);

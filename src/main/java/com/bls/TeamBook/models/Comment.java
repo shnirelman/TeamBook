@@ -21,18 +21,22 @@ public class Comment {
     @NonNull
     private Timestamp date;
 
-    private String text;
+    private String text_md;
+
+
+    private String text_html;
 
     public Long getUser_id() {
         return user_id;
     }
 
     public Comment() {}
-    public Comment(Long article_id, Long user_id, Long parent_id, String text) {
+    public Comment(Long article_id, Long user_id, Long parent_id, String text_md) {
         this.article_id = article_id;
         this.user_id = user_id;
         this.parent_id = parent_id;
-        this.text = text;
+        this.text_md = text_md;
+        this.text_html = null;
         this.date = Timestamp.from(Instant.now());
     }
 
@@ -56,12 +60,20 @@ public class Comment {
         this.article_id = article_id;
     }
 
-    public String getText() {
-        return text;
+    public String getText_md() {
+        return text_md;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getText_html() {
+        return text_html;
+    }
+
+    public void setText_md(String text_md) {
+        this.text_md = text_md;
+    }
+
+    public void setText_html(String text_html) {
+        this.text_html = text_html;
     }
 
     public Long getParent_id() {
