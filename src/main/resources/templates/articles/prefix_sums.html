@@ -1,18 +1,26 @@
 <div th:fragment="prefix_sums">
     <h1 class="article_h1"> Префиксные суммы </h1>
-    <h2 class="article_h2">Предварительные требования к читателю</h2>
-    Базовые знания языка(включая массивы)
-    Понятие асимптотики времени работы алгоритмов
-    <h2 class="article_h2">Содержание</h2>
-    <ol>
-        <li><a href="#problem">Постановка задачи</a></li>
-        <li><a href="#simple solution">Очевидное решение</a></li>
-        <li><a href="#idea">Идея</a></li>
-        <li><a href="#algorithm">Алгоритм</a></li>
-        <li><a href="#example">Пример построения и ответа на запрос</a></li>
-        <li><a href="#realization">Реализация</a></li>
-        <li><a href="#applications">Применения</a></li>
-    </ol>
+
+    <div class="article_table_of_content">
+        <h2>Содержание</h2>
+        <ol>
+            <li><a href="#prerequisites">Предварительные требования к читателю</a></li>
+            <li><a href="#problem">Постановка задачи</a></li>
+            <li><a href="#simple solution">Очевидное решение</a></li>
+            <li><a href="#idea">Идея</a></li>
+            <li><a href="#algorithm">Алгоритм</a></li>
+            <li><a href="#example">Пример построения и ответа на запрос</a></li>
+            <li><a href="#realization">Реализация</a></li>
+            <li><a href="#applications">Применения</a></li>
+        </ol>
+    </div>
+
+    <h2 class="article_h2" id="prerequisites">Предварительные требования к читателю</h2>
+    <ul>
+        <li>Базовые знания языка(включая массивы)</li>
+        <li>Понятие асимптотики времени работы алгоритмов</li>
+    </ul>
+
     <h2 class="article_h2" id="problem">Постановка задачи</h2>
     Есть массив a состоящий из <span class="math inline"><em>n</em></span> целых чисел. Нужно ответить на <span class="math inline"><em>q</em></span>
     запросов вида: посчитать сумму элементов с номера <span class="math inline"><em>l</em></span> по номер <span class="math inline"><em>r</em></span>.

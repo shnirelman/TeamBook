@@ -21,6 +21,16 @@
     margin-left: -15px;
 }
 
+.article_table_of_content{
+    padding: 10px;
+    width: max-content;
+
+    background-color: #FFF8E0;
+    border: 2px solid black;  /* Параметры рамки */
+    border-radius: 10px;
+    border-color: #000000;
+}
+
 .comment{
     background-color: #FFF8E0;
     border-radius: 10px;
