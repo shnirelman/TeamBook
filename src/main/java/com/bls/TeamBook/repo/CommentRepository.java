@@ -14,4 +14,10 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
             nativeQuery = true
     )
     ArrayList<Comment> getCommentsByArticleId(@Param("article_id") Long articleId);
+
+    @Query(
+            value = "SELECT id FROM users WHERE login = :login",
+            nativeQuery = true
+    )
+    ArrayList<Long> findIdByLogin(@Param("login") String login);
 }

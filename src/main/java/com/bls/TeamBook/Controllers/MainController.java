@@ -12,6 +12,7 @@ import com.bls.TeamBook.repo.ArticleRepository;
 import com.bls.TeamBook.repo.UserRepository;
 import com.bls.TeamBook.services.CommentService;
 import com.bls.TeamBook.services.MainService;
+import com.bls.TeamBook.services.MyUserDetailsService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -147,8 +148,6 @@ public class MainController {
         return "article";
     }
 
-
-    
     @GetMapping("/test/{name}")
     public String test(@PathVariable(value = "name") String name, Model model) {
         model.addAttribute("login", getLogin());
@@ -187,7 +186,9 @@ public class MainController {
         System.out.println("add comment");
         /*return "home";*/
         Long articleId = getArticleId(articleName);
-        commentService.addComment(new Comment(articleId, 1L, par_id, comment_text));
+
+        Long userId = (getLogin().isBlank() ? -1 : commentRepository.findIdByLogin(getLogin()).get(0));
+        commentService.addComment(new Comment(articleId, userId, par_id, comment_text));
         //return "home";
         return "redirect:/article/" + articleName;
         //return "redirect: /article/" + articleName;
