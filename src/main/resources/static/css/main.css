@@ -3,11 +3,20 @@
 }
 
 .table_of_contents{
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 10%;
+    margin-right: 10%;
     font-family: Times New Roman;
 }
 
 .simple_link{
+    text-decoration: none;
+}
+
+.button {
+    padding: 5% 10%;
+    border: 1px outset 5%;
+    border-radius: 5%;
+    color: #565E64;
+    background-color: 0D6EFD;
     text-decoration: none;
 }

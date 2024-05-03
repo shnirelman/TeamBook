@@ -78,6 +78,7 @@ for(let comment of comments) {
     div.classList.add('article');
     div.classList.add('comment');
     div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + 'px;';
+    div.style.cssText += 'margin-top: 5px;';
     div.setAttribute('id', 'comment' + comment.comment.id);
     article.appendChild(div);
 
