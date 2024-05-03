@@ -73,9 +73,13 @@ public class MainController {
         private int level;
         private Comment comment;
 
+        private String userName;
+
         public CommentOutputInfo(Comment comment, int level) {
             this.comment = comment;
             this.level = level;
+            Optional<MyUser> author = userRepository.findById(comment.getUser_id());
+            author.ifPresent(myUser -> userName = myUser.getLogin());
         }
 
         public int getLevel() {
@@ -92,6 +96,14 @@ public class MainController {
 
         public void setComment(Comment comment) {
             this.comment = comment;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
     }
 

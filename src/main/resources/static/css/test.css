@@ -1,9 +1,9 @@
 body {
         margin-top: 20px;
-        margin-left: 50px;
+        margin-left: 10%;
 }
 .title {
-    margin-left: 20px;
+    margin-left: -20px;
 }
 #button {
     margin-left: 20px;
