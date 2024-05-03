@@ -19,4 +19,16 @@ public class MyUser {
         this.login = login;
         this.password = password;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

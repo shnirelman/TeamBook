@@ -78,14 +78,20 @@ for(let comment of comments) {
     div.classList.add('article');
     div.classList.add('comment');
     div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + 'px;';
+    div.style.cssText += 'margin-top: 5px;';
     div.setAttribute('id', 'comment' + comment.comment.id);
     article.appendChild(div);
 
     let p1 = document.createElement('p');
     p1.classList.add('comment_p');
-    p1.innerHTML = 'user id : ' + comment.comment.user_id;
-    if(comment.comment.parent_id != null && comment.comment.parent_id >= 0)
+
+    if(comment.comment.parent_id != null && comment.comment.parent_id >= 0) {
+        p1.innerHTML = 'user ' + comment.userName;
         p1.innerHTML += '  ответил на <a href=\"#comment' + comment.comment.parent_id + '\" class=\"simple_link\"> комментарий</a>';
+    } else {
+        p1.innerHTML = 'user ' + comment.userName + ':';
+    }
+
     div.appendChild(p1);
 
     let p2 = document.createElement('p');

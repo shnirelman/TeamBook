@@ -1,6 +1,6 @@
 .article{
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 10%;
+    margin-right: 10%;
     text-align: justify;
     font-family: Times New Roman;
 }
@@ -33,7 +33,9 @@
 
 .comment{
     background-color: #FFF8E0;
+    border: 1px solid black;  /* Параметры рамки */
     border-radius: 10px;
+    border-color: #000000;
 }
 
 .comment_p{
