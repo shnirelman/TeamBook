@@ -117,7 +117,7 @@ function drawEdge(v, u) {
         ctx.lineTo(X[u], Y[u]);
         ctx.stroke();
     }
-    else {
+    else if((X[v] - X[u]) * (X[v] - X[u]) + (Y[v] - Y[u]) * (Y[v] - Y[u]) > 4 * R * R) {
         let dx = X[v] - X[u];
         let dy = Y[v] - Y[u];
         let len = Math.sqrt(dx * dx + dy * dy);
@@ -483,6 +483,11 @@ function handleFilesOpen(files) {
 
         isDirected = (isDir != 0);
         n = N;
+
+        vertices = new Array();
+
+        for(let i = 0; i < n; i++)
+            vertices[i] = i;
 
         if(isDirected)
             radioDirected.checked = true;
