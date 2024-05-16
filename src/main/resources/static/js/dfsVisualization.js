@@ -197,6 +197,9 @@ function loadExample() {
     for(let i = 1; i < n; i++)
         addEdge(i, i + 1);
 
+    addVertex(150, 250);
+    addEdge(2, 6);
+
     draw();
 }
 

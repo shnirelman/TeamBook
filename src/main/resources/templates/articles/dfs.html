@@ -15,6 +15,41 @@
         width: 50px;
       }
     </style>
+    <div class="article_table_of_content">
+        <h2>Содержание</h2>
+        <ol>
+            <li><a href="#prerequisites">Предварительные требования к читателю</a></li>
+            <li><a href="#problem">Постановка задачи</a></li>
+            <li><a href="#algorithm">Описание алгоритма</a></li>
+            <li><a href="#visualization">Визуализация алгоритма</a></li>
+            <li><a href="#storing">Хранение графа</a></li>
+            <li><a href="#implementation">Реализация алгоритма</a></li>
+            <li><a href="#applications">Применения</a></li>
+        </ol>
+    </div>
+
+    <h2 class="article_h2" id="prerequisites">Предварительные требования к читателю</h2>
+    <ul>
+        <li>Понятие графа</li>
+        <li>Рекурсивные функции</li>
+        <li>Массивы с возможностью добавления новых элементов (например, vector в C++)</li>
+    </ul>
+
+    <h2 class="article_h2" id="problem">Постановка задачи</h2>
+    Граф - это набор вершин, некоторые пары которых соединены рёбрами. Графы могут быть ориентированными
+    (рёбра имеют направление) или неориентированными (рёбра двусторонние).
+    <p>Рассмотрим следующую задачу: дан граф, нужно найти все его вершины, до которых можно добраться по рёбрам из данной.
+
+    <h2 class="article_h2" id="algorithm">Описание алгоритма</h2>
+    Обход графа в глубину (DFS, depth first search) работает следующим образом:
+    <ul>
+        <li>Для стартовой вершины отметим, что она посещена</li>
+        <li>Переберём все вершины, в которые можно прийти из данной по одному ребру</li>
+        <li>Если в этом переборе встречается ещё не посещённая вершина, запускаем обход из неё</li>
+    </ul>
+
+    <h2 class="article_h2" id="visualization">Визуализация алгоритма</h2>
+
     <form class="form">
         <button type="button" id="btnDeleteGraph">Удалить граф</button>
         <button type="button" id="btnLoadExample">Загрузить пример</button><br>
@@ -41,4 +76,65 @@
     </form>
     <canvas id="drawing" width="600" height="500">Ошибка</canvas>
     <script src="../static/js/dfsVisualization.js" th:src="@{/js/dfsVisualization.js}"></script>
+
+    <h2 class="article_h2" id="storing">Хранение графа</h2>
+    Самый сложный шаг в алгоритме - перебрать все вершины, достижимые из данной по одному ребру.
+    Будем хранить граф в виде списка смежности: для каждого элемента будем хранить все смежные с ним (т.е. достижимые по одному ребру).
+    В С++ создание списка смежности можно реализовать следующим образом:
+
+    <!-- <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">vector<span style="color: #333333">&lt;</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">&gt;</span> p(n <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>);
+    <span style="color: #008800; font-weight: bold">for</span>(<span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> n; i<span style="color: #333333">++</span>)
+    p[i <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>] <span style="color: #333333">=</span> p[i] <span style="color: #333333">+</span> a[i];
+    </pre></div> --->
+    <pre><code class="language-cpp">
+        const int N = 1e5 + 5;
+        vector &ltint> g[N]; // для каждой вершины будем хранить вектор смежных с ней
+        ...
+        int n, m; // число вершин и число рёбер
+        cin >> n >> m;
+
+        for(int i = 0; i < m; i++) {
+            int u, v; // считываем ребро
+            cin >> u >> v;
+
+            u--; // обычно во входных данных рёбра нумеруются с 1
+            v--; // а в программе с 0
+
+            g[u].push_back(v); // добавляем конец ребра в список для начала ребра
+            // для неориентированных графов также нужно g[v].push_back(u);
+        }
+    </code></pre>
+
+    <h2 class="article_h2" id="implementation">Реализация алгоритма</h2>
+    <!-- <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%">vector<span style="color: #333333">&lt;</span><span style="color: #333399; font-weight: bold">int</span><span style="color: #333333">&gt;</span> p(n <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>, <span style="color: #0000DD; font-weight: bold">0</span>);
+    <span style="color: #008800; font-weight: bold">for</span>(<span style="color: #333399; font-weight: bold">int</span> i <span style="color: #333333">=</span> <span style="color: #0000DD; font-weight: bold">0</span>; i <span style="color: #333333">&lt;</span> n; i<span style="color: #333333">++</span>)
+    p[i <span style="color: #333333">+</span> <span style="color: #0000DD; font-weight: bold">1</span>] <span style="color: #333333">=</span> p[i] <span style="color: #333333">+</span> a[i];
+    </pre></div> --->
+    <pre><code class="language-cpp">
+        const int N = 1e5 + 5;
+
+        bool used[N]; // посещена ли вершина
+        vector &ltint> g[N];
+
+        void dfs(int v) {
+            used[v] = true;
+
+            for(auto to:g[v]) {
+                if(!used[to])
+                    dfs(to);
+            }
+        }
+    </code></pre>
+
+    <h2 class="article_h2" id="applications">Применения</h2>
+    <ul>
+        <li>Поиск пути от одной вершины до другой. Чтобы восстановить путь, по которому алгоритм пришёл в некоторую вершину,
+        для каждой вершины будем хранить предка - вершину, из которой алгоритм пришёл в данную.
+        Тогда для восстановления пути из вершины \(s\) в вершину \(t\) нужно из вершины \(t\) идти в
+        предка, пока не придём в вершину \(s\). Получится путь в обратном порядке.</li>
+        <li>Поиск компонент связности. Компонента связности в неориентированном графе - это область,
+        вершины которой достижимы друг из друга по рёбрам (и в которую нельзя добавить ещё одну вершину с сохранением этого свойства).
+            Если запустить обход в глубину из одной вершины, то он обойдёт всю её компоненту связности.</li>
+    </ul>
+
 </div>
