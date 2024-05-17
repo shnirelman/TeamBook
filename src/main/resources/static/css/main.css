@@ -29,3 +29,15 @@ element {
     background-color: 0D6EFD;
     text-decoration: none;
 }
+
+@media screen and (min-width: 800px) {
+    .login_form_large{
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .login_form_small{
+        width: 90%;
+    }
+}

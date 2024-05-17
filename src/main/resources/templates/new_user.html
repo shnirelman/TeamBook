@@ -20,13 +20,13 @@
     <h1>Регистрация</h1><br>
     <form action="/new-user" method="post" class="mb-5">
         <span th:text="${loginError}" class="error"></span>
-        <input th:value="${savedLogin}" type="text" name="login" placeholder="Логин" class="form-control w-50 input"><br>
+        <input th:value="${savedLogin}" type="text" name="login" placeholder="Логин" class="form-control  login_form_large login_form_small input"><br>
 
         <span th:text="${passwordError}" class="error"></span>
-        <input type="password" name="password" placeholder="Пароль" class="form-control w-50 input"><br>
+        <input type="password" name="password" placeholder="Пароль" class="form-control  login_form_large login_form_small input"><br>
 
         <span th:text="${confirmPasswordError}" class="error"></span>
-        <input type="password" name="confirmPassword" placeholder="Подтверждение пароля" class="form-control w-50 input"><br>
+        <input type="password" name="confirmPassword" placeholder="Подтверждение пароля" class="form-control  login_form_large login_form_small input"><br>
 
         <button type="submit" id="regButton" class="btn btn-success">Зарегистрироваться</button>
     </form>

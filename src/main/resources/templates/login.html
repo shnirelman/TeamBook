@@ -19,7 +19,7 @@
 <div class="table_of_contents">
   <h1>Войти</h1><br>
 
-  <div class="alert alert-danger w-50" id="errorAlert" hidden="true">Неверный логин или пароль</div>
+  <div class="alert alert-danger login_form_large login_form_small" id="errorAlert" hidden="true">Неверный логин или пароль</div>
 
   <script>
     let params = (new URL(document.location)).searchParams;
@@ -28,9 +28,9 @@
   </script>
 
   <form action="/login" method="post" class="mb-5">
-    <input type="text" name="username" placeholder="Логин" class="form-control w-50 input"><br>
+    <input type="text" name="username" placeholder="Логин" class="form-control input login_form_large login_form_small"><br>
 
-    <input type="password" name="password" placeholder="Пароль" class="form-control w-50 input"><br>
+    <input type="password" name="password" placeholder="Пароль" class="form-control input login_form_large login_form_small"><br>
 
     <button type="submit" id="regButton" class="btn btn-success">Войти</button>
   </form>
