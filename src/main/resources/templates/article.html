@@ -11,23 +11,43 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
-<body id="article" class="main article">
+<body class="main">
     <div th:insert="blocks/header :: header"></div>
-    <div th:insert="'articles/' + ${name} :: ${name}"></div>
 
-    <div style="text-align: left;">
-        <h2 class="article_h2">Тест</h2>
-        Пройдите небольшой <a th:href="'/test/' + ${name}">тест</a>, чтобы закрепить материал.
+    <script th:inline="javascript">
+        var chapters = /*[[${chapters}]]*/;
+    </script>
+
+    <div class="container1">
+        <div class="left article_table_of_contents_div_large article_table_of_contents_div_small" style="float: left; ">
+            <div class="article_table_of_contents_large article_table_of_contents_small">
+                <h2>Содержание</h2>
+                <div id="table_of_contents">
+                    <script src="../static/js/tableOfContents.js" th:src="@{/js/tableOfContents.js}"></script>
+
+                </div>
+            </div>
+        </div>
+        <div class="right article_main_part_large article_main_part_small" style="float: right;" id="article">
+            <div th:insert="'articles/' + ${name} :: ${name}" class="article"></div>
+            <div style="text-align: left;" class="article">
+                <h2 class="article_h2">Тест</h2>
+                Пройдите небольшой <a th:href="'/test/' + ${name}">тест</a>, чтобы закрепить материал.
+            </div>
+
+            <div style="text-align: left;" class="article">
+                <h2 class="article_h2">Комментарии</h2>
+                <script th:inline="javascript">
+                    var comments = /*[[${comments}]]*/;
+                    var articleName = /*[[${name}]]*/;
+                </script>
+                <script src="../static/js/articleComments.js" th:src="@{/js/articleComments.js}"></script>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
     </div>
 
-    <div style="text-align: left;">
-        <h2 class="article_h2">Комментарии</h2>
-        <script th:inline="javascript">
-            var comments = /*[[${comments}]]*/;
-            var articleName = /*[[${name}]]*/;
-        </script>
-        <script src="../static/js/articleComments.js" th:src="@{/js/articleComments.js}"></script>
-    </div>
+
 
 </body>
 </html>

@@ -1,37 +1,97 @@
+element {
+    font1: Calibri;
+}
+
 .article{
-    margin-left: 10%;
-    margin-right: 10%;
+
+
     text-align: justify;
     font-family: Times New Roman;
 }
 
-.article_h1{
-    margin-left: -35px;
+.container1 {
+
 }
 
-.article_h2{
-    margin-left: -25px;
+
+@media screen and (min-width: 800px) {
+    .article_table_of_contents_div_large {
+        position:sticky;
+        left:5px;
+        top:3%;
+        width: 17%;
+    }
+
+    .article_table_of_contents_large{
+        display: inline-block;
+
+
+        font-family: Calibri;
+
+        padding: 10px;
+
+        background-color: #FFF8E0;
+        border: 2px solid black;  /* Параметры рамки */
+        border-radius: 10px;
+        border-color: #000000;
+    }
+
+    .article_main_part_large{
+         display: inline-block;
+         width: 70%;
+         margin-right: 3%;
+         margin-down: 10px;
+     }
+
+     .article_h1{
+         margin-left: -4%;
+         font-family: Calibri;
+     }
+
+     .article_h2{
+         margin-left: -3%;
+         font-family: Calibri;
+     }
+
+     .article_h3{
+         margin-left: -2.5%;
+         font-family: Calibri;
+     }
+
+     .article_h4{
+         margin-left: -2%;
+         font-family: Calibri;
+     }
+
 }
 
-.article_h3{
-    margin-left: -20px;
+@media screen and (max-width: 800px) {
+    .article_table_of_contents_div_small {
+        padding: 4%;
+    }
+    .article_table_of_contents_small{
+        width: 95%;
+
+        font-family: Calibri;
+
+        padding: 10px;
+
+        background-color: #FFF8E0;
+        border: 2px solid black;  /* Параметры рамки */
+        border-radius: 10px;
+        border-color: #000000;
+    }
+
+    .article_main_part_small{
+        padding: 4%;
+        
+     }
 }
 
-.article_h4{
-    margin-left: -15px;
-}
 
-.article_table_of_content{
-    padding: 10px;
-    width: max-content;
-
-    background-color: #FFF8E0;
-    border: 2px solid black;  /* Параметры рамки */
-    border-radius: 10px;
-    border-color: #000000;
-}
 
 .comment{
+    font-family: Calibri;
     background-color: #FFF8E0;
     border: 1px solid black;  /* Параметры рамки */
     border-radius: 10px;
@@ -39,6 +99,7 @@
 }
 
 .comment_p{
+    font-family: Calibri;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 20px;
@@ -46,6 +107,7 @@
 }
 
 .comment_btn_answer{
+    font-family: Calibri;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 20px;
@@ -53,6 +115,7 @@
 }
 
 .comment_input_text{
+    font-family: Calibri;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 20px;

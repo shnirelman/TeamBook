@@ -1,15 +1,7 @@
 package com.bls.TeamBook.Controllers;
 
-import com.bls.TeamBook.models.Answer;
-import com.bls.TeamBook.models.Article;
-import com.bls.TeamBook.models.Comment;
-import com.bls.TeamBook.models.MyUser;
-import com.bls.TeamBook.models.Question;
-import com.bls.TeamBook.repo.AnswerRepository;
-import com.bls.TeamBook.repo.CommentRepository;
-import com.bls.TeamBook.repo.QuestionRepository;
-import com.bls.TeamBook.repo.ArticleRepository;
-import com.bls.TeamBook.repo.UserRepository;
+import com.bls.TeamBook.models.*;
+import com.bls.TeamBook.repo.*;
 import com.bls.TeamBook.services.CommentService;
 import com.bls.TeamBook.services.MainService;
 import com.bls.TeamBook.services.MyUserDetailsService;
@@ -38,6 +30,8 @@ public class MainController {
     private AnswerRepository answerRepository;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private ChapterRepository chapterRepository;
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
@@ -156,6 +150,14 @@ public class MainController {
         }
 
         model.addAttribute("comments", commentsOutputInfo);
+
+        Iterable<Chapter> chapters = chapterRepository.findAllByArticleId(id);
+        model.addAttribute("chapters", chapters);
+
+        System.out.println("----------------------- id = " + id);
+        for(Chapter c : chapters) {
+            System.out.println("chapter + " + c.getId() + " " + c.getName() + "  " + c.getCode() + " " + c.getArticleId());
+        }
 
         return "article";
     }
