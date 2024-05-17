@@ -1362,7 +1362,7 @@ int main() {
 private:
     int n;  // максимальное количество элементов в структуре
     unordered_map&ltint, int> ht; // ключ - значение в вершине, значение - количество вершин с таким значением
-    unordered_map&ltint, list<int>::iterator> ht_it; // ключ - значение в вершине, значение - итератор в соответствующем списке из ht_inv
+    unordered_map&ltint, list&ltint>::iterator> ht_it; // ключ - значение в вершине, значение - итератор в соответствующем списке из ht_inv
     int mode_count;         // количество раз, которое встречается мода в текущий момент времени
     vector&ltlist&ltint>> ht_inv;   // в i-ом элементе хранятся все такие x, что ht[x] = i
 public:

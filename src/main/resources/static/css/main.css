@@ -1,11 +1,20 @@
+element {
+    font1: Calibri;
+}
+
 .main{
     background-color: #FFE8D0;
+    margin-bottom: 10px;
+}
+
+.main_font{
+    font-family: Calibri;
 }
 
 .table_of_contents{
     margin-left: 10%;
     margin-right: 10%;
-    font-family: Times New Roman;
+    font-family: Calibri;
 }
 
 .simple_link{
@@ -19,4 +28,16 @@
     color: #565E64;
     background-color: 0D6EFD;
     text-decoration: none;
+}
+
+@media screen and (min-width: 800px) {
+    .login_form_large{
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .login_form_small{
+        width: 90%;
+    }
 }

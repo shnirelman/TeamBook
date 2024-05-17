@@ -5,12 +5,12 @@ article = document.querySelector('#article');
 //var articleName = [[${name}]];
 console.log(articleName);
 
-const commentIndent = 30;
+const commentIndent = 3;
 
 let new_comment_div = document.createElement('div');
 new_comment_div.classList.add('article');
 new_comment_div.classList.add('comment');
-new_comment_div.style.cssText += 'margin-left: ' + commentIndent.toString() + 'px;';
+//new_comment_div.style.cssText += 'margin-left: ' + commentIndent.toString() + '%;';
 new_comment_div.style.cssText += 'margin-left: 0px;';
 
 add_btn_answer(new_comment_div, -1);
@@ -77,7 +77,7 @@ for(let comment of comments) {
     let div = document.createElement('div');
     div.classList.add('article');
     div.classList.add('comment');
-    div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + 'px;';
+    div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + '%;';
     div.style.cssText += 'margin-top: 5px;';
     div.setAttribute('id', 'comment' + comment.comment.id);
     article.appendChild(div);
