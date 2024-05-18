@@ -84,7 +84,7 @@ element {
 
     .article_main_part_small{
         padding: 4%;
-
+        max-width: 100%;
      }
 }
 
