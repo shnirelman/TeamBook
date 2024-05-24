@@ -16,7 +16,7 @@ function btnSendAnswerClick(level, comment_text, par_id) {
     console.log("comment_text = " + comment_text);
     console.log("par_id = " + par_id);
 
-    fetch(window.location.href + '/new_comment?comment_text=' + comment_text + '&par_id=' + par_id + '&level=' + (level + 1), {
+    fetch(window.location.href + '/new_comment?comment_text=' + comment_text + '&par_id=' + par_id + '&level=' + level, {
       method: "POST"
     })
       .then(response=>response.json())
@@ -25,16 +25,21 @@ function btnSendAnswerClick(level, comment_text, par_id) {
         //comments.sort(function(a,b){
         //  return new Date(a.comment.date) - new Date(b.comment.date);
         //});
-        for(let i = -1; i < comments.length; i++) {
+        if(data.comment.parent_id == -1) {
+            comments.push(data);
+        }
+        else
+        for(let i = 0; i < comments.length; i++) {
             console.log("i = " + i);
             if(i != -1) {
                 console.log("id = " + comments[i].comment.id);
                 console.log("par_id = " + data.comment.parent_id);
             }
-            if(i == -1 && data.par_id == -1 || i != -1 && comments[i].comment.id == data.comment.parent_id) {
+            if(comments[i].comment.id == data.comment.parent_id) {
                 console.log("if");
+
                 for(let j = i + 1; j <= comments.length; j++) {
-                    if(j == comments.length || comments[i].level == comments[j].level) {
+                    if(j == comments.length || comments[i].level >= comments[j].level) {
                         console.log("if2");
                         for(let k = comments.length - 1; k >= j; k--)
                             comments[k + 1] = comments[k];
