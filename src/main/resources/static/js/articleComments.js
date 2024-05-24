@@ -7,16 +7,29 @@ console.log(articleName);
 
 const commentIndent = 3;
 
+let comments_div = document.createElement('div');
+comments_div.id = 'comments_div';
+article.appendChild(comments_div);
+
 let new_comment_div = document.createElement('div');
 new_comment_div.classList.add('article');
 new_comment_div.classList.add('comment');
 //new_comment_div.style.cssText += 'margin-left: ' + commentIndent.toString() + '%;';
 new_comment_div.style.cssText += 'margin-left: 0px;';
 
-add_btn_answer(new_comment_div, -1);
-article.appendChild(new_comment_div);
+add_btn_answer(-1, new_comment_div, -1);
+comments_div.appendChild(new_comment_div);
 
-function add_btn_answer(div, par_id) {
+function btnSendAnswerClick(level, comment_text, par_id) {
+    fetch(window.location.href + '/new_comment?comment_text="test"&par_id=1&level=' + (level + 1), {
+      method: "POST"
+    })
+      .then((response) => {console.log(response.body.json());});
+
+
+}
+
+function add_btn_answer(level, div, par_id) {
     let btnAnswer = document.createElement('button');
     btnAnswer.classList.add('comment_btn_answer');
     btnAnswer.classList.add('btn');
@@ -53,9 +66,12 @@ function add_btn_answer(div, par_id) {
         let btnSendAnswer = document.createElement('button');
         btnSendAnswer.classList.add('comment_btn_answer');
         btnSendAnswer.innerHTML = 'Отправить';
-        btnSendAnswer.type = 'submit';
+        btnSendAnswer.type = 'button';
         btnSendAnswer.classList.add('btn');
         btnSendAnswer.classList.add('btn-success');
+        btnSendAnswer.onclick = function() {
+            btnSendAnswerClick(level + 1, inputTextarea.text, inputParId);
+        };
         formAnswer.appendChild(btnSendAnswer);
 
         /*btnSendAnswer.addEventListener('click', function() {
@@ -80,7 +96,7 @@ for(let comment of comments) {
     div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + '%;';
     div.style.cssText += 'margin-top: 5px;';
     div.setAttribute('id', 'comment' + comment.comment.id);
-    article.appendChild(div);
+    comments_div.appendChild(div);
 
     let p1 = document.createElement('p');
     p1.classList.add('comment_p');
@@ -105,5 +121,5 @@ for(let comment of comments) {
     p3.innerHTML = comment.comment.text_html;
     div.appendChild(p3);
 
-    add_btn_answer(div, comment.comment.id);
+    add_btn_answer(comment.level, div, comment.comment.id);
 }

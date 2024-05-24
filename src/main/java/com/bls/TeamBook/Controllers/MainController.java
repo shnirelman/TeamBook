@@ -23,32 +23,7 @@ import java.util.*;
 
 @Controller
 @AllArgsConstructor
-public class MainController {
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private ArticleRepository articleRepository;
-    @Autowired
-    private ChapterRepository chapterRepository;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-
-    private MainService service;
-    private CommentService commentService;
-    public String getLogin() {
-        String login = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser")
-            login = "";
-
-        return login;
-    }
-
+public class MainController extends com.bls.TeamBook.Controllers.Controller {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("login", getLogin());
@@ -62,44 +37,7 @@ public class MainController {
         return "tests";
     }
 
-    class CommentOutputInfo {
-        public static final int maxLevel = 6;
-        private int level;
-        private Comment comment;
 
-        private String userName;
-
-        public CommentOutputInfo(Comment comment, int level) {
-            this.comment = comment;
-            this.level = level;
-            Optional<MyUser> author = userRepository.findById(comment.getUser_id());
-            author.ifPresent(myUser -> userName = myUser.getLogin());
-        }
-
-        public int getLevel() {
-            return level;
-        }
-
-        public void setLevel(int level) {
-            this.level = level;
-        }
-
-        public Comment getComment() {
-            return comment;
-        }
-
-        public void setComment(Comment comment) {
-            this.comment = comment;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
-    }
 
     class CommentComparator implements Comparator<Comment> {
         @Override
@@ -114,7 +52,7 @@ public class MainController {
                      ArrayList<CommentOutputInfo> result) {
         ArrayList<Comment> children = graph.get(comment.getId());
         Collections.sort(children, new CommentComparator());
-        result.add(new CommentOutputInfo(comment, level));
+        result.add(new CommentOutputInfo(userRepository, comment, level));
 
         for(Comment child : children) {
             commentsDFS(child, Math.min(level + 1, CommentOutputInfo.maxLevel), graph, result);
@@ -183,31 +121,9 @@ public class MainController {
         return "test";
     }
 
-    private Long getArticleId(String articleName) {
-        Iterable<Long> ids = articleRepository.findIdByAddressName(articleName);
-        Iterator<Long> idsItrator = ids.iterator();
-        if(!idsItrator.hasNext()) {
-            //TODO ERROR
-        }
-        return idsItrator.next();
-    }
 
-    @PostMapping("/article/{articleName}/new_comment")
-    public String addComment(@PathVariable(value = "articleName") String articleName,
-                             @RequestParam String comment_text,
-                             @RequestParam Long par_id,
-                             Model model) {
-        System.out.println("add comment");
-        /*return "home";*/
-        Long articleId = getArticleId(articleName);
 
-        Long userId = (getLogin().isBlank() ? -1 : commentRepository.findIdByLogin(getLogin()).get(0));
-        commentService.addComment(new Comment(articleId, userId, par_id, comment_text));
-        //return "home";
-        return "redirect:/article/" + articleName;
-        //return "redirect: /article/" + articleName;
-        //return "redirect:/";
-    }
+
 
     @PostMapping("/new-user")
     public String addUser(@RequestParam String login, @RequestParam String password, @RequestParam String confirmPassword,
