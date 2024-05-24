@@ -11,20 +11,45 @@ let comments_div = document.createElement('div');
 comments_div.id = 'comments_div';
 article.appendChild(comments_div);
 
-let new_comment_div = document.createElement('div');
-new_comment_div.classList.add('article');
-new_comment_div.classList.add('comment');
-//new_comment_div.style.cssText += 'margin-left: ' + commentIndent.toString() + '%;';
-new_comment_div.style.cssText += 'margin-left: 0px;';
-
-add_btn_answer(-1, new_comment_div, -1);
-comments_div.appendChild(new_comment_div);
-
 function btnSendAnswerClick(level, comment_text, par_id) {
-    fetch(window.location.href + '/new_comment?comment_text="test"&par_id=1&level=' + (level + 1), {
+    console.log("level = " + level);
+    console.log("comment_text = " + comment_text);
+    console.log("par_id = " + par_id);
+
+    fetch(window.location.href + '/new_comment?comment_text=' + comment_text + '&par_id=' + par_id + '&level=' + (level + 1), {
       method: "POST"
     })
-      .then((response) => {console.log(response.body.json());});
+      .then(response=>response.json())
+      .then(data=>{
+        //comments.push(data);
+        //comments.sort(function(a,b){
+        //  return new Date(a.comment.date) - new Date(b.comment.date);
+        //});
+        for(let i = -1; i < comments.length; i++) {
+            console.log("i = " + i);
+            if(i != -1) {
+                console.log("id = " + comments[i].comment.id);
+                console.log("par_id = " + data.comment.parent_id);
+            }
+            if(i == -1 && data.par_id == -1 || i != -1 && comments[i].comment.id == data.comment.parent_id) {
+                console.log("if");
+                for(let j = i + 1; j <= comments.length; j++) {
+                    if(j == comments.length || comments[i].level == comments[j].level) {
+                        console.log("if2");
+                        for(let k = comments.length - 1; k >= j; k--)
+                            comments[k + 1] = comments[k];
+                        comments[j] = data;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        console.log(data);
+        console.log(comments);
+        comments_div.innerHTML = '';
+        createComments();
+      })
 
 
 }
@@ -57,12 +82,6 @@ function add_btn_answer(level, div, par_id) {
         p1.appendChild(inputTextarea);
         formAnswer.appendChild(p1);
 
-        let inputParId = document.createElement('input');
-        inputParId.type = 'hidden';
-        inputParId.name = 'par_id';
-        inputParId.value = par_id;
-        formAnswer.appendChild(inputParId);
-
         let btnSendAnswer = document.createElement('button');
         btnSendAnswer.classList.add('comment_btn_answer');
         btnSendAnswer.innerHTML = 'Отправить';
@@ -70,7 +89,7 @@ function add_btn_answer(level, div, par_id) {
         btnSendAnswer.classList.add('btn');
         btnSendAnswer.classList.add('btn-success');
         btnSendAnswer.onclick = function() {
-            btnSendAnswerClick(level + 1, inputTextarea.text, inputParId);
+            btnSendAnswerClick(level + 1, inputTextarea.value, par_id);
         };
         formAnswer.appendChild(btnSendAnswer);
 
@@ -89,37 +108,50 @@ function add_btn_answer(level, div, par_id) {
 //input.classList.add('textInput');
 //new_comment_div.appendChild(input);
 
-for(let comment of comments) {
-    let div = document.createElement('div');
-    div.classList.add('article');
-    div.classList.add('comment');
-    div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + '%;';
-    div.style.cssText += 'margin-top: 5px;';
-    div.setAttribute('id', 'comment' + comment.comment.id);
-    comments_div.appendChild(div);
+function createComments() {
+    let new_comment_div = document.createElement('div');
+    new_comment_div.classList.add('article');
+    new_comment_div.classList.add('comment');
+    //new_comment_div.style.cssText += 'margin-left: ' + commentIndent.toString() + '%;';
+    new_comment_div.style.cssText += 'margin-left: 0px;';
 
-    let p1 = document.createElement('p');
-    p1.classList.add('comment_p');
+    add_btn_answer(-1, new_comment_div, -1);
+    comments_div.appendChild(new_comment_div);
 
-    if(comment.comment.parent_id != null && comment.comment.parent_id >= 0) {
-        p1.innerHTML = 'user ' + comment.userName;
-        p1.innerHTML += '  ответил на <a href=\"#comment' + comment.comment.parent_id + '\" class=\"simple_link\"> комментарий</a>';
-    } else {
-        p1.innerHTML = 'user ' + comment.userName + ':';
+    for(let comment of comments) {
+        let div = document.createElement('div');
+        div.classList.add('article');
+        div.classList.add('comment');
+        div.style.cssText += 'margin-left: ' + (commentIndent * comment.level).toString() + '%;';
+        div.style.cssText += 'margin-top: 5px;';
+        div.setAttribute('id', 'comment' + comment.comment.id);
+        comments_div.appendChild(div);
+
+        let p1 = document.createElement('p');
+        p1.classList.add('comment_p');
+
+        if(comment.comment.parent_id != null && comment.comment.parent_id >= 0) {
+            p1.innerHTML = 'user ' + comment.userName;
+            p1.innerHTML += '  ответил на <a href=\"#comment' + comment.comment.parent_id + '\" class=\"simple_link\"> комментарий</a>';
+        } else {
+            p1.innerHTML = 'user ' + comment.userName + ':';
+        }
+
+        div.appendChild(p1);
+
+        let p2 = document.createElement('p');
+        p2.classList.add('comment_p');
+        let sdate =  comment.comment.date.slice(0, 10);
+        p2.innerHTML = "   Дата отправки: " + sdate;
+        div.appendChild(p2);
+
+        let p3 = document.createElement('p');
+        p3.classList.add('comment_p');
+        p3.innerHTML = comment.comment.text_html;
+        div.appendChild(p3);
+
+        add_btn_answer(comment.level, div, comment.comment.id);
     }
-
-    div.appendChild(p1);
-
-    let p2 = document.createElement('p');
-    p2.classList.add('comment_p');
-    let sdate =  comment.comment.date.slice(0, 10);
-    p2.innerHTML = "   Дата отправки: " + sdate;
-    div.appendChild(p2);
-
-    let p3 = document.createElement('p');
-    p3.classList.add('comment_p');
-    p3.innerHTML = comment.comment.text_html;
-    div.appendChild(p3);
-
-    add_btn_answer(comment.level, div, comment.comment.id);
 }
+
+createComments();
