@@ -1,3 +1,93 @@
+function CreateRequest()
+{
+    var Request = false;
+
+    if (window.XMLHttpRequest)
+    {
+        //Gecko-совместимые браузеры, Safari, Konqueror
+        Request = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+        //Internet explorer
+        try
+        {
+             Request = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (CatchException)
+        {
+             Request = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+    }
+
+    if (!Request)
+    {
+        alert("Невозможно создать XMLHttpRequest");
+    }
+    else
+    {
+        console.log("request has been created");
+    }
+
+    return Request;
+}
+
+function SendRequest(r_method, r_path, r_args, r_handler, r_body)
+{
+    console.log("SendRequest " + r_method + "  " + r_path + "  " + r_args + "  " + r_body);
+    //Создаём запрос
+    var Request = CreateRequest();
+
+    //Проверяем существование запроса еще раз
+    if (!Request)
+    {
+        return;
+    }
+
+    //Назначаем пользовательский обработчик
+    Request.onreadystatechange = function()
+    {
+        //Если обмен данными завершен
+        if (Request.readyState == 4)
+        {
+            if (Request.status == 200)
+            {
+                //Передаем управление обработчику пользователя
+                r_handler(Request);
+            }
+        }
+    }
+
+    //Проверяем, если требуется сделать GET-запрос
+    //if (r_method.toLowerCase() == "get" && r_args.length > 0)
+    r_path += "?" + r_args;
+
+    //Инициализируем соединение
+    Request.open(r_method, r_path, true);
+
+    if (r_method.toLowerCase() == "post")
+    {
+        //Если это POST-запрос
+
+        //Устанавливаем заголовок
+        Request.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
+        //Посылаем запрос
+        Request.send(r_body);
+    }
+    else
+    {
+        //Если это GET-запрос
+
+        //Посылаем нуль-запрос
+        Request.send(null);
+    }
+}
+
+
+function getCurrentUrl() {
+    return window.location.href;
+}
+
 console.log("javascript");
 
 article = document.querySelector('#article');
@@ -7,55 +97,71 @@ console.log(articleName);
 
 const commentIndent = 3;
 
+let comments_title_span = document.createElement('span');
+comments_title_span.style.cssText += 'width: 100%;';
+let comments_title_h2 = document.createElement('h2')
+comments_title_h2.classList.add('article_h2');
+comments_title_h2.innerHTML = 'Комментарии';
+comments_title_h2.style.cssText += 'display: inline-block; width: fit-content;';
+comments_title_span.appendChild(comments_title_h2);
+
+let btnRefresh = document.createElement('button');
+btnRefresh.classList.add('comment_btn_answer');
+btnRefresh.classList.add('btn');
+btnRefresh.classList.add('btn-secondary');
+btnRefresh.cssText += 'display: inline-block;'
+btnRefresh.innerHTML = 'Обновить';
+comments_title_span.appendChild(btnRefresh);
+
+var Handler = function(Request)
+{
+    var responseData = eval("(" + Request.responseText + ")")
+    console.log(responseData);
+    if(responseData === undefined) {
+        console.log("responseData is undefined");
+        return;
+    }
+
+    for(let i = 0; i < responseData.length; i++) {
+        let c = responseData[i];
+        console.log(c);
+        addCommentToComments(c);
+        if(new Date(c.date) > new Date(date))
+            date = c.date;
+
+    }
+    comments_div.innerHTML = '';
+    createComments();
+
+    console.log("date = " + date);
+}
+
+
+btnRefresh.addEventListener('click', function() {
+    SendRequest("GET", getCurrentUrl() + '/new_comments'
+                          , '&date=' + date
+                          , Handler
+                          , '');
+});
+article.appendChild(comments_title_span);
+
 let comments_div = document.createElement('div');
 comments_div.id = 'comments_div';
 article.appendChild(comments_div);
+
 
 function btnSendAnswerClick(level, comment_text, par_id) {
     console.log("level = " + level);
     console.log("comment_text = " + comment_text);
     console.log("par_id = " + par_id);
 
-    fetch(window.location.href + '/new_comment?comment_text=' + comment_text + '&par_id=' + par_id + '&level=' + level, {
-      method: "POST"
-    })
-      .then(response=>response.json())
-      .then(data=>{
-        //comments.push(data);
-        //comments.sort(function(a,b){
-        //  return new Date(a.comment.date) - new Date(b.comment.date);
-        //});
-        if(data.comment.parent_id == -1) {
-            comments.push(data);
-        }
-        else
-        for(let i = 0; i < comments.length; i++) {
-            console.log("i = " + i);
-            if(i != -1) {
-                console.log("id = " + comments[i].comment.id);
-                console.log("par_id = " + data.comment.parent_id);
-            }
-            if(comments[i].comment.id == data.comment.parent_id) {
-                console.log("if");
 
-                for(let j = i + 1; j <= comments.length; j++) {
-                    if(j == comments.length || comments[i].level >= comments[j].level) {
-                        console.log("if2");
-                        for(let k = comments.length - 1; k >= j; k--)
-                            comments[k + 1] = comments[k];
-                        comments[j] = data;
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        console.log(data);
-        console.log(comments);
-        comments_div.innerHTML = '';
-        createComments();
-      })
 
+    //Отправляем запрос
+    SendRequest("POST", getCurrentUrl() + '/new_comment'
+                      , 'par_id=' + par_id + '&date=' + date
+                      , Handler
+                      , comment_text);
 
 }
 
@@ -113,6 +219,40 @@ function add_btn_answer(level, div, par_id) {
 //input.classList.add('textInput');
 //new_comment_div.appendChild(input);
 
+function addCommentToComments(data) {
+    for(let i = 0; i < comments.length; i++) {
+        if(comments[i].comment.id == data.comment.id)
+            return;
+    }
+
+    if(data.comment.parent_id == -1) {
+        comments.push(data);
+    }
+    else {
+        for(let i = 0; i < comments.length; i++) {
+            console.log("i = " + i);
+            if(i != -1) {
+                console.log("id = " + comments[i].comment.id);
+                console.log("par_id = " + data.comment.parent_id);
+            }
+            if(comments[i].comment.id == data.comment.parent_id) {
+                console.log("if");
+
+                for(let j = i + 1; j <= comments.length; j++) {
+                    if(j == comments.length || comments[i].level >= comments[j].level) {
+                        console.log("if2");
+                        for(let k = comments.length - 1; k >= j; k--)
+                            comments[k + 1] = comments[k];
+                        comments[j] = data;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+
 function createComments() {
     let new_comment_div = document.createElement('div');
     new_comment_div.classList.add('article');
@@ -158,5 +298,6 @@ function createComments() {
         add_btn_answer(comment.level, div, comment.comment.id);
     }
 }
+
 
 createComments();

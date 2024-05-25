@@ -30,7 +30,7 @@ element {
 
         padding: 10px;
 
-        background-color: #FFF8E0;
+        background-color: #F8F8F8;
         border: 2px solid black;  /* Параметры рамки */
         border-radius: 10px;
         border-color: #000000;
@@ -76,7 +76,7 @@ element {
 
         padding: 10px;
 
-        background-color: #FFF8E0;
+        background-color: #F8F8F8;
         border: 2px solid black;  /* Параметры рамки */
         border-radius: 10px;
         border-color: #000000;
@@ -92,7 +92,7 @@ element {
 
 .comment{
     font-family: Calibri;
-    background-color: #FFF8E0;
+    background-color: #FFFFFF;
     border: 1px solid black;  /* Параметры рамки */
     border-radius: 10px;
     border-color: #000000;

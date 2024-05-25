@@ -13,9 +13,12 @@ public class CommentOutputInfo {
 
     private String userName;
 
+    private String date;
+
     public CommentOutputInfo(UserRepository userRepository, Comment comment, int level) {
         this.comment = comment;
         this.level = level;
+        this.date = comment.getDate().toString();
         Optional<MyUser> author = userRepository.findById(comment.getUser_id());
         author.ifPresent(myUser -> userName = myUser.getLogin());
     }
@@ -42,5 +45,13 @@ public class CommentOutputInfo {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

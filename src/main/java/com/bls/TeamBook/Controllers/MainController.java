@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
 import java.util.*;
@@ -62,6 +64,7 @@ public class MainController extends com.bls.TeamBook.Controllers.Controller {
     @GetMapping("/article/{name}")
     public String home(@PathVariable(value = "name") String name, Model model) {
         model.addAttribute("login", getLogin());
+        model.addAttribute("date", Timestamp.from(Instant.now()).toString());
 
         Long id = getArticleId(name);
 

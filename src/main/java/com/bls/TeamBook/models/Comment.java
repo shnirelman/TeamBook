@@ -18,6 +18,7 @@ public class Comment {
     private Long article_id;
     private Long user_id;
     private Long parent_id;
+    private int level;
     @NonNull
     private Timestamp date;
 
@@ -92,5 +93,11 @@ public class Comment {
         this.date = date;
     }
 
+    public int getLevel() {
+        return level;
+    }
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
 }
