@@ -20,16 +20,18 @@ let id = 1;
 
 for(let el of questions) {
     let div = document.createElement('div');
-    div.classList.add('question');
+    div.classList.add('question_div');
     test.appendChild(div);
 
     let p = document.createElement('p');
+    //p.classList.add('question_inside');
     p.innerHTML = id + '. ' + el.text;
     id++;
     div.appendChild(p);
 
     if(el.type == 1) {
         let input = document.createElement('input');
+        //input.classList.add('question_inside');
         input.dataset.right = el.right_answer;
         div.appendChild(input);
         input.classList.add('textInput');
@@ -50,6 +52,7 @@ for(let el of questions) {
 
             let label = document.createElement('label');
             label.setAttribute('for', radio.id);
+            label.setAttribute('display', 'block');
             label.classList.add('answerText');
             label.innerHTML = answer.text;
             divAnswer.appendChild(label);
@@ -76,6 +79,7 @@ for(let el of questions) {
 
             let label = document.createElement('label');
             label.setAttribute('for', checkbox.id);
+            //label.setAttribute('display', 'block');
             label.classList.add('answerText');
             label.innerHTML = answer.text;
             divAnswer.appendChild(label);
@@ -89,7 +93,12 @@ for(let el of questions) {
     }
 }
 
+button_div = document.createElement('div');
+button_div.classList.add('answer_button_div');
+test.appendChild(button_div);
+
 button = document.createElement('button');
+button.classList.add('answer_button');
 button.id = 'button';
-button.innerHTML = 'Проверить';
-test.appendChild(button);
+button.innerHTML = 'Завершить тест';
+button_div.appendChild(button);

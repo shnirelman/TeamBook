@@ -11,9 +11,11 @@
 <style>
 
 </style>
-<body id="test" class="main">
+<body>
     <div th:insert="blocks/header :: header"></div>
-    <h1 class="title">Тест</h1>
+    <div id="test" class="main test_body">
+        <h1 class="title" th:text="'Тест: ' + ${title}"></h1>
+    </div>
 </body>
 <script th:inline="javascript">
     var questions = /*[[${questions}]]*/;

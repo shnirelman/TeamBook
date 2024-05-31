@@ -108,9 +108,11 @@ public class MainController extends com.bls.TeamBook.Controllers.Controller {
         model.addAttribute("login", getLogin());
 
         Long id = getArticleId(name);
+        String title = articleRepository.findTitleById(id).get();
 
         model.addAttribute("name", name);
         model.addAttribute("id", id);
+        model.addAttribute("title", title);
 
         ArrayList<Question> questions = questionRepository.findAllByArticleId(id);
         model.addAttribute("questions", questions);

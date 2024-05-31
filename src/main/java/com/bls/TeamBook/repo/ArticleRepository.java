@@ -12,6 +12,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
@@ -20,5 +22,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
             nativeQuery = true
     )
     ArrayList<Long> findIdByAddressName(@Param("address_name") String addressName);
+
+    @Query(
+            value = "SELECT title FROM Article a WHERE a.id = :id",
+            nativeQuery = true
+    )
+    Optional<String> findTitleById(@Param("id") Long id);
 }
 
